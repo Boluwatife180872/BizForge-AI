@@ -1,0 +1,56 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         String     @id @default(uuid())
+  email      String     @unique
+  password   String?
+  createdAt  DateTime   @default(now())
+  businesses Business[]
+}
+
+model Business {
+  id              String           @id @default(uuid())
+  userId          String?
+  user            User?            @relation(fields: [userId], references: [id])
+  name            String
+  niche           String
+  tagline         String
+  brandColor      String           // Hex color code
+  secondaryColor  String?          // Optional hex color code
+  logoEmoji       String           // Emoji symbol representing logo
+  valueProp       String
+  aboutText       String
+  tone            String           // luxury, casual, premium, local, tech
+  landingPageJson String           // Serialized JSON of landing page configuration
+  createdAt       DateTime         @default(now())
+  products        Product[]
+  marketingAssets MarketingAsset[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  title       String
+  price       Float
+  description String
+  category    String
+  imageEmoji  String   // Emoji symbol representing product
+}
+
+model MarketingAsset {
+  id         String   @id @default(uuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  type       String   // 'email', 'ad', 'post'
+  title      String   // Title of campaign post
+  content    String   // The copy text
+  platform   String   // Instagram, TikTok, Email, Facebook, LinkedIn
+}
