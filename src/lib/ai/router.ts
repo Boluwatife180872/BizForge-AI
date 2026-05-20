@@ -218,11 +218,16 @@ JSON Structure Contract:
     }
   ],
   "design": {
-    "layout": "centered" or "split" or "minimal" or "bold",
-    "cardStyle": "rounded" or "sharp" or "pill",
-    "heroBg": "solid" or "gradient" or "pattern" or "none",
-    "typography": "clean" or "elegant" or "bold",
-    "dividerStyle": "line" or "dots" or "none",
+    "layout": "editorial" or "split" or "showcase" or "immersive" or "stacked",
+    "cardStyle": "soft" or "outline" or "glass" or "shadow",
+    "heroBg": "paper" or "mesh" or "spotlight" or "grid" or "duotone",
+    "typography": "modern" or "editorial" or "display",
+    "density": "airy" or "balanced" or "compact",
+    "productLayout": "grid" or "stack" or "magazine",
+    "featureStyle": "cards" or "bands" or "checklist",
+    "surfaceStyle": "flat" or "tinted" or "contrast",
+    "navStyle": "minimal" or "floating" or "framed",
+    "dividerStyle": "line" or "accent" or "ornament" or "none",
     "showTestimonials": true or false,
     "showFaqs": true or false,
     "showAbout": true or false,
@@ -231,12 +236,23 @@ JSON Structure Contract:
 }
 
 Design Guide:
-- layout: "centered" = classic centered hero, "split" = two-column hero with text left, "minimal" = sparse lots of whitespace, "bold" = large typography dark backgrounds
-- cardStyle: "rounded" = soft rounded cards, "sharp" = no border radius, "pill" = very rounded pill shapes
-- heroBg: "solid" = solid brand color bg, "gradient" = gradient bg, "pattern" = dotted/grid pattern bg, "none" = plain bg
-- typography: "clean" = modern light, "elegant" = refined sophisticated, "bold" = heavy impactful
-- dividerStyle: "line" = thin lines between sections, "dots" = dotted dividers, "none" = no dividers
-- sectionOrder: arrange sections in an order that makes sense for this brand. Put the most important sections first.
+- layout: "editorial" = asymmetrical magazine composition, "split" = clear two-column presentation, "showcase" = product-first gallery feeling, "immersive" = dramatic full-bleed hero, "stacked" = layered blocks with strong rhythm
+- cardStyle: "soft" = rounded calm panels, "outline" = crisp framed surfaces, "glass" = translucent layered surfaces, "shadow" = raised editorial cards
+- heroBg: "paper" = subtle textured light backdrop, "mesh" = multi-color soft gradients, "spotlight" = radial focus around the message, "grid" = structured pattern, "duotone" = strong two-color contrast
+- typography: "modern" = clean geometric sans, "editorial" = serif headline with refined rhythm, "display" = high-impact compressed voice
+- density: controls spacing rhythm; use "airy" for luxury/editorial, "compact" for energetic/product-heavy brands
+- productLayout: "grid" = classic cards, "stack" = horizontal list, "magazine" = alternating feature tiles
+- featureStyle: "cards" = boxed highlights, "bands" = wide strips, "checklist" = lean text-led benefits
+- surfaceStyle: "flat" = minimal surfaces, "tinted" = soft color washes, "contrast" = strong dark/light section shifts
+- navStyle: "minimal" = simple inline nav, "floating" = translucent floating bar, "framed" = boxed bordered header
+- dividerStyle: "line" = thin separators, "accent" = color bars, "ornament" = decorative motif, "none" = no dividers
+- sectionOrder: arrange sections in an order that makes sense for this brand. Put the most important sections first. MUST be a permutation of exactly these five values: "features", "products", "testimonials", "about", "faqs". Do NOT add, remove, rename, or invent any other section names.
+
+Uniqueness rules:
+- Avoid generic startup SaaS aesthetics unless the prompt explicitly suggests that direction.
+- Deliberately combine layout, typography, spacing, and surface treatment into a distinct art direction.
+- Two brands in different niches should not share the same overall visual personality.
+- Prefer surprising but usable compositions over safe template-like choices.
 
 Note: Generate exactly 3 features, 2 testimonials, and 3 FAQs.
 ${commonInstructions}`;
@@ -309,20 +325,26 @@ ${commonInstructions}`;
           { question: 'Can I cancel my plan?', answer: 'Yes, you can cancel or downgrade your plan at any time through our portal.' },
         ];
       }
-      // Default design tokens if AI didn't generate them
-      if (!lp.design) {
-        lp.design = {
-          layout: 'centered',
-          cardStyle: 'rounded',
-          heroBg: 'none',
-          typography: 'clean',
-          dividerStyle: 'line',
-          showTestimonials: true,
-          showFaqs: true,
-          showAbout: true,
-          sectionOrder: ['features', 'products', 'testimonials', 'about', 'faqs'],
-        };
-      }
+      const defaultDesign = {
+        layout: 'split',
+        cardStyle: 'soft',
+        heroBg: 'paper',
+        typography: 'modern',
+        density: 'balanced',
+        productLayout: 'grid',
+        featureStyle: 'cards',
+        surfaceStyle: 'tinted',
+        navStyle: 'minimal',
+        dividerStyle: 'line',
+        showTestimonials: true,
+        showFaqs: true,
+        showAbout: true,
+        sectionOrder: ['features', 'products', 'testimonials', 'about', 'faqs'],
+      };
+      lp.design = {
+        ...defaultDesign,
+        ...(lp.design as Record<string, unknown> | undefined),
+      };
       return lp;
     }
 

@@ -13,9 +13,21 @@ export class TemplateMockProvider implements AIProvider {
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
-  private selectRandomMultiple<T>(arr: T[], count: number): T[] {
-    const shuffled = [...arr].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
+  private hashSeed(input: string): number {
+    let hash = 0;
+    for (let index = 0; index < input.length; index += 1) {
+      hash = ((hash << 5) - hash + input.charCodeAt(index)) | 0;
+    }
+    return Math.abs(hash);
+  }
+
+  private pickBySeed<T>(arr: readonly T[], seed: number, offset = 0): T {
+    return arr[(seed + offset) % arr.length];
+  }
+
+  private rotateBySeed<T>(arr: readonly T[], seed: number): T[] {
+    const start = seed % arr.length;
+    return [...arr.slice(start), ...arr.slice(0, start)];
   }
 
   // Map user prompt keywords to an industry category
@@ -55,7 +67,7 @@ export class TemplateMockProvider implements AIProvider {
   }
 
   // Dynamic Brand Generator
-  private generateBrandDetails(industry: string, tone: string) {
+  private generateBrandDetails(industry: string, tone: string, prompt: string) {
     const prefixes = {
       saas: ['Apex', 'Cloud', 'Pulse', 'Sync', 'Vertex', 'Nova', 'Grid', 'Flow', 'Byte', 'Logic'],
       beauty: ['Aura', 'Bloom', 'Lume', 'Glow', 'Silk', 'Pure', 'Oasis', 'Iris', 'Rose', 'Velvet'],
@@ -72,8 +84,9 @@ export class TemplateMockProvider implements AIProvider {
       crafts: ['Studio', 'Workshop', 'Handmade', 'Goods', 'Co', 'Collective', 'Works', 'Forge', 'Atelier', 'Designs'],
     }[industry as 'saas' | 'beauty' | 'food' | 'coaching' | 'crafts'] || ['Hub', 'Co', 'Group'];
 
-    const prefix = this.selectRandom(prefixes);
-    const suffix = this.selectRandom(suffixes);
+    const seed = this.hashSeed(`${industry}:${tone}:${prompt}`);
+    const prefix = this.pickBySeed(prefixes, seed, 1);
+    const suffix = this.pickBySeed(suffixes, seed, 3);
     const name = `${prefix}${suffix}`;
 
     // Brand Colors mapping (Hex codes)
@@ -97,7 +110,7 @@ export class TemplateMockProvider implements AIProvider {
       name,
       brandColor: palettes.primary,
       secondaryColor: palettes.secondary,
-      logoEmoji: this.selectRandom(logoEmojis),
+      logoEmoji: this.pickBySeed(logoEmojis, seed, 5),
     };
   }
 
@@ -110,7 +123,7 @@ export class TemplateMockProvider implements AIProvider {
   ): Promise<T> {
     const industry = this.detectIndustry(prompt);
     const tone = this.detectTone(prompt);
-    const brand = this.generateBrandDetails(industry, tone);
+    const brand = this.generateBrandDetails(industry, tone, prompt);
 
     let result: unknown;
 
@@ -256,18 +269,49 @@ export class TemplateMockProvider implements AIProvider {
         ],
       }[industry];
 
-      // Generate varied design tokens based on industry + tone
-      const layouts: Array<'centered' | 'split' | 'minimal' | 'bold'> = ['centered', 'split', 'minimal', 'bold'];
-      const cardStyles: Array<'rounded' | 'sharp' | 'pill'> = ['rounded', 'sharp', 'pill'];
-      const heroBgs: Array<'solid' | 'gradient' | 'pattern' | 'none'> = ['solid', 'gradient', 'pattern', 'none'];
-      const typographies: Array<'clean' | 'elegant' | 'bold'> = ['clean', 'elegant', 'bold'];
-      const dividers: Array<'line' | 'dots' | 'none'> = ['line', 'dots', 'none'];
+      const designProfiles = {
+        saas: {
+          layout: ['split', 'showcase', 'stacked', 'immersive', 'editorial'] as const,
+          cardStyle: ['outline', 'shadow', 'soft', 'glass'] as const,
+          heroBg: ['grid', 'mesh', 'spotlight', 'duotone', 'paper'] as const,
+          typography: ['modern', 'display', 'modern', 'editorial', 'display'] as const,
+        },
+        beauty: {
+          layout: ['editorial', 'immersive', 'stacked', 'split', 'showcase'] as const,
+          cardStyle: ['soft', 'glass', 'shadow', 'outline'] as const,
+          heroBg: ['paper', 'mesh', 'spotlight', 'duotone', 'grid'] as const,
+          typography: ['editorial', 'modern', 'editorial', 'display', 'modern'] as const,
+        },
+        food: {
+          layout: ['showcase', 'split', 'immersive', 'stacked', 'editorial'] as const,
+          cardStyle: ['shadow', 'soft', 'outline', 'glass'] as const,
+          heroBg: ['duotone', 'mesh', 'grid', 'spotlight', 'paper'] as const,
+          typography: ['display', 'modern', 'editorial', 'display', 'modern'] as const,
+        },
+        coaching: {
+          layout: ['stacked', 'editorial', 'split', 'immersive', 'showcase'] as const,
+          cardStyle: ['outline', 'soft', 'shadow', 'glass'] as const,
+          heroBg: ['spotlight', 'paper', 'mesh', 'grid', 'duotone'] as const,
+          typography: ['editorial', 'modern', 'display', 'editorial', 'modern'] as const,
+        },
+        crafts: {
+          layout: ['editorial', 'showcase', 'immersive', 'stacked', 'split'] as const,
+          cardStyle: ['soft', 'shadow', 'outline', 'glass'] as const,
+          heroBg: ['paper', 'spotlight', 'duotone', 'mesh', 'grid'] as const,
+          typography: ['editorial', 'display', 'modern', 'editorial', 'display'] as const,
+        },
+      }[industry];
 
-      const seed = prompt.length + industry.length + tone.length;
-      const pick = <T>(arr: T[], offset: number) => arr[(seed + offset) % arr.length];
+      const seed = this.hashSeed(`${prompt}:${brand.name}:${tone}`);
+      const densityOptions: Array<'airy' | 'balanced' | 'compact'> = ['airy', 'balanced', 'compact'];
+      const productLayouts: Array<'grid' | 'stack' | 'magazine'> = ['grid', 'stack', 'magazine'];
+      const featureStyles: Array<'cards' | 'bands' | 'checklist'> = ['cards', 'bands', 'checklist'];
+      const surfaceStyles: Array<'flat' | 'tinted' | 'contrast'> = ['flat', 'tinted', 'contrast'];
+      const navStyles: Array<'minimal' | 'floating' | 'framed'> = ['minimal', 'floating', 'framed'];
+      const dividers: Array<'line' | 'accent' | 'ornament' | 'none'> = ['line', 'accent', 'ornament', 'none'];
 
       const allSections = ['features', 'products', 'testimonials', 'about', 'faqs'] as const;
-      const shuffled = [...allSections].sort(() => ((seed % 7) - 3) * 0.1);
+      const shuffled = this.rotateBySeed(allSections, seed + 7);
 
       const lpData: LandingPageData = {
         hero: {
@@ -279,11 +323,16 @@ export class TemplateMockProvider implements AIProvider {
         testimonials: testimonialsList,
         faqs: faqsList,
         design: {
-          layout: pick(layouts, 0),
-          cardStyle: pick(cardStyles, 1),
-          heroBg: pick(heroBgs, 2),
-          typography: pick(typographies, 3),
-          dividerStyle: pick(dividers, 4),
+          layout: this.pickBySeed(designProfiles.layout, seed, 0),
+          cardStyle: this.pickBySeed(designProfiles.cardStyle, seed, 1),
+          heroBg: this.pickBySeed(designProfiles.heroBg, seed, 2),
+          typography: this.pickBySeed(designProfiles.typography, seed, 3),
+          density: this.pickBySeed(densityOptions, seed, 4),
+          productLayout: this.pickBySeed(productLayouts, seed, 5),
+          featureStyle: this.pickBySeed(featureStyles, seed, 6),
+          surfaceStyle: this.pickBySeed(surfaceStyles, seed, 7),
+          navStyle: this.pickBySeed(navStyles, seed, 8),
+          dividerStyle: this.pickBySeed(dividers, seed, 9),
           showTestimonials: true,
           showFaqs: true,
           showAbout: true,

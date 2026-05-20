@@ -23,9 +23,9 @@ export default function CopyButton({ text }: CopyButtonProps) {
   return (
     <button
       onClick={handleCopy}
-      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all ${
+      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
         copied
-          ? 'bg-emerald-500/10 text-emerald-400'
+          ? 'bg-[var(--success-bg)] text-[var(--success)]'
           : 'bg-[var(--card)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--card-hover)] border border-[var(--border)]'
       }`}
     >

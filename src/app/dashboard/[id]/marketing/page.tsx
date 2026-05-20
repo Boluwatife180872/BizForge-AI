@@ -35,10 +35,10 @@ export default async function MarketingHubPage({
     post: <Share2 className="w-4 h-4" />,
   };
 
-  const typeColors: Record<string, string> = {
-    email: 'bg-blue-500/10 text-blue-400',
-    ad: 'bg-amber-500/10 text-amber-400',
-    post: 'bg-purple-500/10 text-purple-400',
+  const typeBadgeColors: Record<string, string> = {
+    email: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+    ad: 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
+    post: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
   };
 
   return (
@@ -68,7 +68,7 @@ export default async function MarketingHubPage({
 
         {business.marketingAssets.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 border border-dashed border-[var(--border)] rounded-xl">
-            <div className="w-12 h-12 rounded-xl bg-[var(--card)] flex items-center justify-center mb-4">
+            <div className="w-12 h-12 rounded-xl bg-[var(--card)] border border-[var(--border)] flex items-center justify-center mb-4">
               <Sparkles className="w-5 h-5 text-[var(--muted-foreground)]" />
             </div>
             <p className="text-sm text-[var(--muted)]">No marketing assets for this business</p>
@@ -78,11 +78,11 @@ export default async function MarketingHubPage({
             {business.marketingAssets.map((asset) => (
               <div
                 key={asset.id}
-                className="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 flex flex-col"
+                className="rounded-xl border border-[var(--card-border)] bg-[var(--card)] p-5 flex flex-col"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2.5">
-                    <div className={`w-8 h-8 rounded-md flex items-center justify-center ${typeColors[asset.type] || 'bg-[var(--card)] text-[var(--muted-foreground)] border border-[var(--border)]'}`}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-[var(--background)] border border-[var(--border)] flex items-center justify-center text-[var(--muted-foreground)]">
                       {typeIcons[asset.type] || <Share2 className="w-4 h-4" />}
                     </div>
                     <div>
@@ -90,14 +90,14 @@ export default async function MarketingHubPage({
                       <p className="text-[10px] text-[var(--muted-foreground)]">{asset.platform}</p>
                     </div>
                   </div>
-                  <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded bg-[var(--card)] border border-[var(--border)] text-[var(--muted-foreground)]">
+                  <span className={`text-[10px] font-medium uppercase px-2 py-0.5 rounded ${typeBadgeColors[asset.type] || 'bg-[var(--background)] text-[var(--muted-foreground)] border border-[var(--border)]'}`}>
                     {asset.type}
                   </span>
                 </div>
 
-                <pre className="flex-1 bg-[var(--code-bg)] border border-[var(--code-border)] rounded-lg p-4 font-mono text-xs text-[var(--muted)] leading-relaxed whitespace-pre-wrap overflow-y-auto max-h-56">
+                <div className="flex-1 rounded-lg border border-[var(--code-border)] bg-[var(--code-bg)] p-4 font-mono text-xs text-[var(--muted)] leading-relaxed whitespace-pre-wrap overflow-y-auto max-h-56">
                   {asset.content}
-                </pre>
+                </div>
 
                 <div className="flex items-center justify-between mt-4 pt-4 border-t border-[var(--border)]">
                   <span className="text-[10px] text-[var(--muted-foreground)]">Ready to use</span>
