@@ -6,7 +6,7 @@ import { BusinessSchema, ProductsSchema, LandingPageSchema, MarketingSchema, Lan
 
 type DesignProfile = NonNullable<LandingPageData['design']>;
 
-const DESIGN_PROFILES: Omit<DesignProfile, 'showTestimonials' | 'showFaqs' | 'showAbout' | 'sectionOrder'>[] = [
+const DESIGN_PROFILES: DesignProfile[] = [
   {
     layout: 'editorial',
     cardStyle: 'soft',
@@ -18,6 +18,9 @@ const DESIGN_PROFILES: Omit<DesignProfile, 'showTestimonials' | 'showFaqs' | 'sh
     surfaceStyle: 'tinted',
     navStyle: 'minimal',
     dividerStyle: 'ornament',
+    theme: 'journal',
+    heroMedia: 'badge',
+    ctaStyle: 'outline',
   },
   {
     layout: 'immersive',
@@ -30,6 +33,9 @@ const DESIGN_PROFILES: Omit<DesignProfile, 'showTestimonials' | 'showFaqs' | 'sh
     surfaceStyle: 'contrast',
     navStyle: 'floating',
     dividerStyle: 'accent',
+    theme: 'terminal',
+    heroMedia: 'device',
+    ctaStyle: 'split',
   },
   {
     layout: 'split',
@@ -42,6 +48,9 @@ const DESIGN_PROFILES: Omit<DesignProfile, 'showTestimonials' | 'showFaqs' | 'sh
     surfaceStyle: 'flat',
     navStyle: 'framed',
     dividerStyle: 'line',
+    theme: 'studio',
+    heroMedia: 'pattern',
+    ctaStyle: 'solid',
   },
   {
     layout: 'showcase',
@@ -54,6 +63,9 @@ const DESIGN_PROFILES: Omit<DesignProfile, 'showTestimonials' | 'showFaqs' | 'sh
     surfaceStyle: 'tinted',
     navStyle: 'floating',
     dividerStyle: 'accent',
+    theme: 'catalog',
+    heroMedia: 'stack',
+    ctaStyle: 'split',
   },
   {
     layout: 'stacked',
@@ -66,6 +78,9 @@ const DESIGN_PROFILES: Omit<DesignProfile, 'showTestimonials' | 'showFaqs' | 'sh
     surfaceStyle: 'flat',
     navStyle: 'minimal',
     dividerStyle: 'ornament',
+    theme: 'atelier',
+    heroMedia: 'orb',
+    ctaStyle: 'outline',
   },
   {
     layout: 'split',
@@ -78,6 +93,9 @@ const DESIGN_PROFILES: Omit<DesignProfile, 'showTestimonials' | 'showFaqs' | 'sh
     surfaceStyle: 'contrast',
     navStyle: 'framed',
     dividerStyle: 'line',
+    theme: 'kinetic',
+    heroMedia: 'device',
+    ctaStyle: 'solid',
   },
   {
     layout: 'editorial',
@@ -90,6 +108,9 @@ const DESIGN_PROFILES: Omit<DesignProfile, 'showTestimonials' | 'showFaqs' | 'sh
     surfaceStyle: 'flat',
     navStyle: 'minimal',
     dividerStyle: 'accent',
+    theme: 'studio',
+    heroMedia: 'badge',
+    ctaStyle: 'split',
   },
   {
     layout: 'showcase',
@@ -102,6 +123,39 @@ const DESIGN_PROFILES: Omit<DesignProfile, 'showTestimonials' | 'showFaqs' | 'sh
     surfaceStyle: 'contrast',
     navStyle: 'floating',
     dividerStyle: 'ornament',
+    theme: 'kinetic',
+    heroMedia: 'stack',
+    ctaStyle: 'outline',
+  },
+  {
+    layout: 'immersive',
+    cardStyle: 'outline',
+    heroBg: 'spotlight',
+    typography: 'editorial',
+    density: 'airy',
+    productLayout: 'magazine',
+    featureStyle: 'checklist',
+    surfaceStyle: 'flat',
+    navStyle: 'framed',
+    dividerStyle: 'none',
+    theme: 'atelier',
+    heroMedia: 'pattern',
+    ctaStyle: 'solid',
+  },
+  {
+    layout: 'stacked',
+    cardStyle: 'glass',
+    heroBg: 'grid',
+    typography: 'display',
+    density: 'compact',
+    productLayout: 'grid',
+    featureStyle: 'bands',
+    surfaceStyle: 'contrast',
+    navStyle: 'floating',
+    dividerStyle: 'accent',
+    theme: 'terminal',
+    heroMedia: 'orb',
+    ctaStyle: 'split',
   },
 ];
 
@@ -113,12 +167,6 @@ function hashSeed(value: string) {
   return Math.abs(hash);
 }
 
-function rotateSections(seed: number): DesignProfile['sectionOrder'] {
-  const base: DesignProfile['sectionOrder'] = ['features', 'products', 'testimonials', 'about', 'faqs'];
-  const start = seed % base.length;
-  return [...base.slice(start), ...base.slice(0, start)] as DesignProfile['sectionOrder'];
-}
-
 function enforceDesignVariation(
   landingPageData: LandingPageData,
   input: { prompt: string; businessName: string; niche: string; tone: string; nonce: string }
@@ -126,15 +174,18 @@ function enforceDesignVariation(
   const seed = hashSeed(`${input.prompt}:${input.businessName}:${input.niche}:${input.tone}:${input.nonce}`);
   const profile = DESIGN_PROFILES[seed % DESIGN_PROFILES.length];
   const existing = landingPageData.design;
+  const [heroBlock, ...remainingBlocks] = landingPageData.pageBlocks;
+  const rotateBy = remainingBlocks.length ? seed % remainingBlocks.length : 0;
+  const variedBlocks = heroBlock
+    ? [heroBlock, ...remainingBlocks.slice(rotateBy), ...remainingBlocks.slice(0, rotateBy)]
+    : landingPageData.pageBlocks;
 
   return {
     ...landingPageData,
+    pageBlocks: variedBlocks,
     design: {
       ...profile,
-      showTestimonials: existing?.showTestimonials ?? true,
-      showFaqs: existing?.showFaqs ?? true,
-      showAbout: existing?.showAbout ?? true,
-      sectionOrder: rotateSections(seed + input.businessName.length),
+      ...existing,
     },
   };
 }
@@ -172,7 +223,7 @@ export async function POST(req: Request) {
 
     const landingPageData = await routerInstance.generateContent(
       'landing_page',
-      `Original user idea: "${prompt}". Generate landing page layout sections for "${businessData.name}" (${businessData.niche} niche). Tagline: "${businessData.tagline}". Value prop: "${businessData.valueProp}". Tone: "${businessData.tone}". Brand colors: "${businessData.brandColor}" and "${businessData.secondaryColor || 'auto'}". Style seed: "${businessData.name}-${businessData.niche}-${prompt.length}-${designNonce}".`,
+      `Original user idea: "${prompt}". Generate a modular block-based landing page for "${businessData.name}" (${businessData.niche} niche). Tagline: "${businessData.tagline}". Value prop: "${businessData.valueProp}". Tone: "${businessData.tone}". Products/offers: ${productsData.products.map((product) => `${product.title} at $${product.price}`).join(', ')}. Brand colors: "${businessData.brandColor}" and "${businessData.secondaryColor || 'auto'}". Style seed: "${businessData.name}-${businessData.niche}-${prompt.length}-${designNonce}". Use the seed to choose a unique pageBlocks sequence and do not reuse a generic fixed section order.`,
       LandingPageSchema
     );
     const variedLandingPageData = enforceDesignVariation(landingPageData, {

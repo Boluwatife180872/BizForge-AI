@@ -89,13 +89,10 @@ export class GroqProvider implements AIProvider {
       const cleanedText = this.cleanJSON(rawText);
       const jsonParsed = JSON.parse(cleanedText);
 
-      // Zod validation (First-phase)
-      const parseResult = schema.safeParse(jsonParsed);
-      if (!parseResult.success) {
-        throw new Error(`Groq JSON failed validation: ${parseResult.error.message}`);
-      }
-
-      return parseResult.data;
+      // The router normalizes provider JSON before schema validation. Validating
+      // here would reject repairable AI drift, such as "LinkedIn Post".
+      void schema;
+      return jsonParsed as T;
     } catch (err) {
       clearTimeout(timeoutId);
       if (err instanceof Error && err.name === 'AbortError') {

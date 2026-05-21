@@ -30,7 +30,7 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
-  title: "BizForge AI - Launch a Complete Business with a Single Prompt",
+  title: "BizCraft AI - Launch a Complete Business with a Single Prompt",
   description: "AI-powered platform that generates brand identity, product catalogs, landing pages, and marketing campaigns from a single natural language prompt.",
 };
 

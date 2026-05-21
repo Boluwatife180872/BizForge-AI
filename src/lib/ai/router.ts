@@ -154,7 +154,7 @@ CRITICAL RESPONSE RULES:
 
     switch (type) {
       case 'business':
-        return `You are BizForge AI's branding architect. Generate a cohesive business concept based on the user's prompt.
+        return `You are BizCraft AI's branding architect. Generate a cohesive business concept based on the user's prompt.
 JSON Structure Contract:
 {
   "name": "Generated Brand Name",
@@ -170,7 +170,7 @@ JSON Structure Contract:
 ${commonInstructions}`;
 
       case 'products':
-        return `You are BizForge AI's product strategist. Generate between 3 and 5 detailed, highly-relevant products or service tiers based on the business details.
+        return `You are BizCraft AI's product strategist. Generate between 3 and 5 detailed, highly-relevant products or service tiers based on the business details.
 JSON Structure Contract:
 {
   "products": [
@@ -186,35 +186,32 @@ JSON Structure Contract:
 ${commonInstructions}`;
 
       case 'landing_page':
-        return `You are BizForge AI's UX/UI designer and copywriter. Generate a complete landing page with content AND design decisions.
+        return `You are BizCraft AI's UX/UI designer and copywriter. You are designing a landing page using modular blocks.
 
-IMPORTANT: Choose a UNIQUE visual design style for this brand. No two businesses should look the same. Match the design to the brand's tone, industry, and personality.
+CRITICAL CREATIVE REQUIREMENT:
+You MUST choose a unique combination of page sections for EVERY generation.
+You MUST vary layout, block order, and structure per business.
+You MUST avoid repeating common SaaS layouts unless the niche truly requires it.
+You MUST choose block combinations based on niche, tone, products, and customer intent.
+You MUST output ONLY JSON with a "pageBlocks" array.
+Each generation must feel like a completely different designer created it.
+
+ANTI-REPETITION RULES:
+- Never use the same block sequence twice. Always shuffle the order after the hero.
+- Do NOT default to hero + features + testimonials + FAQ. That is the old template.
+- Mix and match from ALL available block types. Not every page needs features. Not every page needs FAQ.
+- Some pages should lead with story. Some should lead with social proof. Some should lead with pricing.
+- If the niche is visual (beauty, food, crafts), prioritize image_showcase and story_section.
+- If the niche is transactional (SaaS, coaching), prioritize pricing_table and cta_banner.
+- Vary the total block count: sometimes 4 blocks, sometimes 5, sometimes 6 or 7.
+- Use different heading copy for each block type. Do not reuse "Why it works" or "Customer proof" every time.
 
 JSON Structure Contract:
 {
-  "hero": {
-    "title": "Catchy Hero Headline",
-    "subtitle": "Supporting subtitle copy expanding the value statement",
-    "ctaText": "Call to action button text"
-  },
-  "features": [
+  "pageBlocks": [
     {
-      "title": "Feature Title",
-      "description": "How it works or what makes it special",
-      "iconEmoji": "Single emoji representing the feature benefit"
-    }
-  ],
-  "testimonials": [
-    {
-      "quote": "Direct quote praising the products, service speed, or quality.",
-      "author": "Full Name",
-      "role": "Job Title / Customer Type"
-    }
-  ],
-  "faqs": [
-    {
-      "question": "Common customer question",
-      "answer": "Helpful, clear answer"
+      "type": "hero_centered" or "hero_split" or "feature_grid" or "feature_list" or "social_proof" or "pricing_table" or "cta_banner" or "story_section" or "faq" or "image_showcase",
+      "data": {}
     }
   ],
   "design": {
@@ -228,12 +225,34 @@ JSON Structure Contract:
     "surfaceStyle": "flat" or "tinted" or "contrast",
     "navStyle": "minimal" or "floating" or "framed",
     "dividerStyle": "line" or "accent" or "ornament" or "none",
-    "showTestimonials": true or false,
-    "showFaqs": true or false,
-    "showAbout": true or false,
-    "sectionOrder": ["features", "products", "testimonials", "about", "faqs"]
+    "theme": "studio" or "terminal" or "atelier" or "catalog" or "journal" or "kinetic",
+    "heroMedia": "orb" or "device" or "badge" or "pattern" or "stack",
+    "ctaStyle": "solid" or "outline" or "split"
   }
 }
+
+Block data contracts:
+- hero_centered / hero_split data: { "title": string, "subtitle": string, "ctaText": string }
+- feature_grid / feature_list data: { "heading": string, "features": [{ "title": string, "description": string, "iconEmoji": "single emoji" }] } with 3-6 features
+- social_proof data: { "heading": string, "items": [{ "quote": string, "author": string, "role": string }] } with 2-4 items
+- pricing_table data: { "heading": string, "plans": [{ "name": string, "price": string, "description": string, "features": [string], "ctaText": string }] } with 2-4 plans
+- cta_banner data: { "title": string, "subtitle": string, "ctaText": string }
+- story_section data: { "eyebrow": string, "title": string, "body": string }
+- faq data: { "heading": string, "items": [{ "question": string, "answer": string }] } with 3-6 items
+- image_showcase data: { "heading": string, "items": [{ "title": string, "caption": string, "imageEmoji": "single emoji" }] } with 3-6 items
+
+Composition rules:
+- Generate 4-7 blocks total. Vary the count per generation.
+- The first block MUST be either "hero_centered" or "hero_split".
+- Do NOT include both hero types in the same page.
+- Do NOT include every possible block type. Select a curated subset.
+- Randomize block order after the hero. Never use a fixed sequence.
+- Different industries MUST produce different page compositions.
+- SaaS often benefits from pricing_table + feature_grid + social_proof, but vary the order and do not always include all three.
+- Beauty often benefits from image_showcase + story_section + social_proof, but experiment with other combinations.
+- Coaching often benefits from story_section + cta_banner + social_proof, but try different arrangements.
+- Local/craft/food brands should prefer story/image/showcase blocks over generic feature-heavy SaaS structure.
+- Write unique, brand-specific heading copy for every block. Never use generic headings.
 
 Design Guide:
 - layout: "editorial" = asymmetrical magazine composition, "split" = clear two-column presentation, "showcase" = product-first gallery feeling, "immersive" = dramatic full-bleed hero, "stacked" = layered blocks with strong rhythm
@@ -246,19 +265,20 @@ Design Guide:
 - surfaceStyle: "flat" = minimal surfaces, "tinted" = soft color washes, "contrast" = strong dark/light section shifts
 - navStyle: "minimal" = simple inline nav, "floating" = translucent floating bar, "framed" = boxed bordered header
 - dividerStyle: "line" = thin separators, "accent" = color bars, "ornament" = decorative motif, "none" = no dividers
-- sectionOrder: arrange sections in an order that makes sense for this brand. Put the most important sections first. MUST be a permutation of exactly these five values: "features", "products", "testimonials", "about", "faqs". Do NOT add, remove, rename, or invent any other section names.
+- theme: "studio" = maker-led creative space, "terminal" = technical command-center, "atelier" = refined luxury craft, "catalog" = commerce-forward collection, "journal" = narrative editorial, "kinetic" = energetic movement-led brand
+- heroMedia: choose the dominant visual object in the hero, matched to the brand
+- ctaStyle: choose button treatment that fits the brand, not the default every time
 
 Uniqueness rules:
 - Avoid generic startup SaaS aesthetics unless the prompt explicitly suggests that direction.
 - Deliberately combine layout, typography, spacing, and surface treatment into a distinct art direction.
 - Two brands in different niches should not share the same overall visual personality.
 - Prefer surprising but usable compositions over safe template-like choices.
-
-Note: Generate exactly 3 features, 2 testimonials, and 3 FAQs.
+- Treat each generation as a fresh design brief, not a fill-in-the-blanks template.
 ${commonInstructions}`;
 
       case 'marketing':
-        return `You are BizForge AI's growth marketer. Generate a set of 4 marketing assets based on the business details.
+        return `You are BizCraft AI's growth marketer. Generate a set of 4 marketing assets based on the business details.
 JSON Structure Contract:
 {
   "assets": [
@@ -305,26 +325,7 @@ ${commonInstructions}`;
 
     if (type === 'landing_page') {
       const lp = { ...obj };
-      if (!lp.features || (lp.features as unknown[]).length < 3) {
-        lp.features = [
-          { title: 'Quality Assured', description: 'Crafted to the highest professional standards.', iconEmoji: '✨' },
-          { title: 'Customer First', description: 'Our support team is active and ready to help 24/7.', iconEmoji: '🤝' },
-          { title: 'Eco Friendly', description: 'Built with local, green resources and ethics.', iconEmoji: '🌱' },
-        ];
-      }
-      if (!lp.testimonials || (lp.testimonials as unknown[]).length < 2) {
-        lp.testimonials = [
-          { quote: 'Absolute game changer. Incredible service and quality.', author: 'John Doe', role: 'Premium Member' },
-          { quote: 'Exceeded all my expectations. Will definitely order again.', author: 'Jane Smith', role: 'Verified Client' },
-        ];
-      }
-      if (!lp.faqs || (lp.faqs as unknown[]).length < 3) {
-        lp.faqs = [
-          { question: 'What is your refund policy?', answer: 'We offer full refunds within 14 days if you are not satisfied.' },
-          { question: 'How long does shipping take?', answer: 'Orders are processed immediately and take 3-5 business days.' },
-          { question: 'Can I cancel my plan?', answer: 'Yes, you can cancel or downgrade your plan at any time through our portal.' },
-        ];
-      }
+      {
       const defaultDesign = {
         layout: 'split',
         cardStyle: 'soft',
@@ -336,29 +337,119 @@ ${commonInstructions}`;
         surfaceStyle: 'tinted',
         navStyle: 'minimal',
         dividerStyle: 'line',
-        showTestimonials: true,
-        showFaqs: true,
-        showAbout: true,
-        sectionOrder: ['features', 'products', 'testimonials', 'about', 'faqs'],
+        theme: 'studio',
+        heroMedia: 'orb',
+        ctaStyle: 'solid',
       };
+      const rawDesign = (lp.design as Record<string, unknown> | undefined) || {};
+      const pick = <T extends string>(value: unknown, allowed: readonly T[], fallback: T): T => (
+        typeof value === 'string' && allowed.includes(value as T) ? value as T : fallback
+      );
       lp.design = {
-        ...defaultDesign,
-        ...(lp.design as Record<string, unknown> | undefined),
+        layout: pick(rawDesign.layout, ['editorial', 'split', 'showcase', 'immersive', 'stacked'] as const, defaultDesign.layout),
+        cardStyle: pick(rawDesign.cardStyle, ['soft', 'outline', 'glass', 'shadow'] as const, defaultDesign.cardStyle),
+        heroBg: pick(rawDesign.heroBg, ['paper', 'mesh', 'spotlight', 'grid', 'duotone'] as const, defaultDesign.heroBg),
+        typography: pick(rawDesign.typography, ['modern', 'editorial', 'display'] as const, defaultDesign.typography),
+        density: pick(rawDesign.density, ['airy', 'balanced', 'compact'] as const, defaultDesign.density),
+        productLayout: pick(rawDesign.productLayout, ['grid', 'stack', 'magazine'] as const, defaultDesign.productLayout),
+        featureStyle: pick(rawDesign.featureStyle, ['cards', 'bands', 'checklist'] as const, defaultDesign.featureStyle),
+        surfaceStyle: pick(rawDesign.surfaceStyle, ['flat', 'tinted', 'contrast'] as const, defaultDesign.surfaceStyle),
+        navStyle: pick(rawDesign.navStyle, ['minimal', 'floating', 'framed'] as const, defaultDesign.navStyle),
+        dividerStyle: pick(rawDesign.dividerStyle, ['line', 'accent', 'ornament', 'none'] as const, defaultDesign.dividerStyle),
+        theme: pick(rawDesign.theme, ['studio', 'terminal', 'atelier', 'catalog', 'journal', 'kinetic'] as const, defaultDesign.theme),
+        heroMedia: pick(rawDesign.heroMedia, ['orb', 'device', 'badge', 'pattern', 'stack'] as const, defaultDesign.heroMedia),
+        ctaStyle: pick(rawDesign.ctaStyle, ['solid', 'outline', 'split'] as const, defaultDesign.ctaStyle),
       };
+      const legacyFeatures = Array.isArray(lp.features) ? lp.features as Record<string, unknown>[] : [];
+      const legacyTestimonials = Array.isArray(lp.testimonials) ? lp.testimonials as Record<string, unknown>[] : [];
+      const legacyFaqs = Array.isArray(lp.faqs) ? lp.faqs as Record<string, unknown>[] : [];
+      const fallbackHero = lp.hero as Record<string, unknown> | undefined;
+      lp.pageBlocks = Array.isArray(lp.pageBlocks) && lp.pageBlocks.length >= 4 ? lp.pageBlocks : [
+        {
+          type: 'hero_split',
+          data: {
+            title: typeof fallbackHero?.title === 'string' ? fallbackHero.title : 'Build something customers remember',
+            subtitle: typeof fallbackHero?.subtitle === 'string' ? fallbackHero.subtitle : 'A focused brand experience shaped around your business idea.',
+            ctaText: typeof fallbackHero?.ctaText === 'string' ? fallbackHero.ctaText : 'Shop offers',
+          },
+        },
+        {
+          type: 'feature_grid',
+          data: {
+            heading: 'Why it works',
+            features: (legacyFeatures.length ? legacyFeatures : [
+              { title: 'Distinct offer', description: 'Clear positioning that helps customers understand the value quickly.', iconEmoji: '✨' },
+              { title: 'Built for action', description: 'A direct path from interest to purchase without unnecessary friction.', iconEmoji: '⚡' },
+              { title: 'Customer focused', description: 'Every section is written around the buyer problem and outcome.', iconEmoji: '🤝' },
+            ]).slice(0, 6).map((feature) => ({
+              title: typeof feature.title === 'string' ? feature.title : 'Distinct offer',
+              description: typeof feature.description === 'string' ? feature.description : 'Clear value for the right customer.',
+              iconEmoji: typeof feature.iconEmoji === 'string' ? feature.iconEmoji : '✨',
+            })),
+          },
+        },
+        {
+          type: 'social_proof',
+          data: {
+            heading: 'Customer proof',
+            items: (legacyTestimonials.length ? legacyTestimonials : [
+              { quote: 'The experience felt focused, polished, and easy to trust.', author: 'Jordan Lee', role: 'Early customer' },
+              { quote: 'Exactly the kind of offer I was hoping to find.', author: 'Maya Stone', role: 'Verified buyer' },
+            ]).slice(0, 4).map((item) => ({
+              quote: typeof item.quote === 'string' ? item.quote : 'A polished experience from start to finish.',
+              author: typeof item.author === 'string' ? item.author : 'Verified customer',
+              role: typeof item.role === 'string' ? item.role : 'Customer',
+            })),
+          },
+        },
+        {
+          type: 'faq',
+          data: {
+            heading: 'Questions',
+            items: (legacyFaqs.length ? legacyFaqs : [
+              { question: 'How do I get started?', answer: 'Choose the offer that fits your goal and complete checkout.' },
+              { question: 'Can I ask questions first?', answer: 'Yes, contact the team before purchasing if you need guidance.' },
+              { question: 'What happens after purchase?', answer: 'You receive the next steps and support details immediately.' },
+            ]).slice(0, 6).map((item) => ({
+              question: typeof item.question === 'string' ? item.question : 'How do I get started?',
+              answer: typeof item.answer === 'string' ? item.answer : 'Choose the offer that fits your goal.',
+            })),
+          },
+        },
+      ];
       return lp;
+    }
     }
 
     if (type === 'marketing') {
       const mkt = { ...obj };
       if (Array.isArray(mkt.assets)) {
         mkt.assets = (mkt.assets as Record<string, unknown>[]).map((a) => {
-          const assetType = ['email', 'ad', 'post'].includes(a.type as string) ? a.type : 'post';
-          const platform = ['Instagram', 'TikTok', 'Email', 'Facebook', 'LinkedIn'].includes(a.platform as string) ? a.platform : 'Instagram';
+          const rawType = typeof a.type === 'string' ? a.type.trim().toLowerCase() : '';
+          const rawPlatform = typeof a.platform === 'string' ? a.platform.trim().toLowerCase() : '';
+          const assetType = ['email', 'ad', 'post'].includes(rawType) ? rawType : 'post';
+          const platformMap: Record<string, 'Instagram' | 'TikTok' | 'Email' | 'Facebook' | 'LinkedIn'> = {
+            instagram: 'Instagram',
+            'instagram post': 'Instagram',
+            'instagram reel': 'Instagram',
+            'instagram reels': 'Instagram',
+            tiktok: 'TikTok',
+            'tik tok': 'TikTok',
+            email: 'Email',
+            newsletter: 'Email',
+            facebook: 'Facebook',
+            'facebook ad': 'Facebook',
+            linkedin: 'LinkedIn',
+            'linked in': 'LinkedIn',
+            'linkedin post': 'LinkedIn',
+          };
+          const platform = platformMap[rawPlatform] || 'Instagram';
           return {
             ...a,
             type: assetType,
             platform,
-            content: (a.content as string).trim(),
+            title: typeof a.title === 'string' ? a.title.trim() : 'Marketing Asset',
+            content: typeof a.content === 'string' ? a.content.trim() : '',
           };
         });
       }

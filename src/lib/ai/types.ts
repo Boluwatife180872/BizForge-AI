@@ -39,42 +39,131 @@ export const ProductsSchema = z.object({
 
 export type ProductsData = z.infer<typeof ProductsSchema>;
 
-export const LandingPageSchema = z.object({
-  hero: z.object({
-    title: z.string().min(1),
-    subtitle: z.string().min(1),
-    ctaText: z.string().min(1),
+export const LandingDesignSchema = z.object({
+  layout: z.enum(['editorial', 'split', 'showcase', 'immersive', 'stacked']),
+  cardStyle: z.enum(['soft', 'outline', 'glass', 'shadow']),
+  heroBg: z.enum(['paper', 'mesh', 'spotlight', 'grid', 'duotone']),
+  typography: z.enum(['modern', 'editorial', 'display']),
+  density: z.enum(['airy', 'balanced', 'compact']),
+  productLayout: z.enum(['grid', 'stack', 'magazine']),
+  featureStyle: z.enum(['cards', 'bands', 'checklist']),
+  surfaceStyle: z.enum(['flat', 'tinted', 'contrast']),
+  navStyle: z.enum(['minimal', 'floating', 'framed']),
+  dividerStyle: z.enum(['line', 'accent', 'ornament', 'none']),
+  theme: z.enum(['studio', 'terminal', 'atelier', 'catalog', 'journal', 'kinetic']),
+  heroMedia: z.enum(['orb', 'device', 'badge', 'pattern', 'stack']),
+  ctaStyle: z.enum(['solid', 'outline', 'split']),
+});
+
+export type LandingDesignData = z.infer<typeof LandingDesignSchema>;
+
+export const PageBlockSchema = z.discriminatedUnion('type', [
+  z.object({
+    type: z.literal('hero_centered'),
+    data: z.object({
+      title: z.string().min(1),
+      subtitle: z.string().min(1),
+      ctaText: z.string().min(1),
+    }),
   }),
-  features: z.array(z.object({
-    title: z.string().min(1),
-    description: z.string().min(1),
-    iconEmoji: emojiValidation,
-  })).min(3),
-  testimonials: z.array(z.object({
-    quote: z.string().min(1),
-    author: z.string().min(1),
-    role: z.string().min(1),
-  })).min(2),
-  faqs: z.array(z.object({
-    question: z.string().min(1),
-    answer: z.string().min(1),
-  })).min(3),
-  design: z.object({
-    layout: z.enum(['editorial', 'split', 'showcase', 'immersive', 'stacked']),
-    cardStyle: z.enum(['soft', 'outline', 'glass', 'shadow']),
-    heroBg: z.enum(['paper', 'mesh', 'spotlight', 'grid', 'duotone']),
-    typography: z.enum(['modern', 'editorial', 'display']),
-    density: z.enum(['airy', 'balanced', 'compact']),
-    productLayout: z.enum(['grid', 'stack', 'magazine']),
-    featureStyle: z.enum(['cards', 'bands', 'checklist']),
-    surfaceStyle: z.enum(['flat', 'tinted', 'contrast']),
-    navStyle: z.enum(['minimal', 'floating', 'framed']),
-    dividerStyle: z.enum(['line', 'accent', 'ornament', 'none']),
-    showTestimonials: z.boolean(),
-    showFaqs: z.boolean(),
-    showAbout: z.boolean(),
-    sectionOrder: z.array(z.enum(['features', 'products', 'testimonials', 'about', 'faqs'])),
-  }).optional(),
+  z.object({
+    type: z.literal('hero_split'),
+    data: z.object({
+      title: z.string().min(1),
+      subtitle: z.string().min(1),
+      ctaText: z.string().min(1),
+    }),
+  }),
+  z.object({
+    type: z.literal('feature_grid'),
+    data: z.object({
+      heading: z.string().min(1).optional(),
+      features: z.array(z.object({
+        title: z.string().min(1),
+        description: z.string().min(1),
+        iconEmoji: emojiValidation,
+      })).min(3).max(6),
+    }),
+  }),
+  z.object({
+    type: z.literal('feature_list'),
+    data: z.object({
+      heading: z.string().min(1).optional(),
+      features: z.array(z.object({
+        title: z.string().min(1),
+        description: z.string().min(1),
+        iconEmoji: emojiValidation,
+      })).min(3).max(6),
+    }),
+  }),
+  z.object({
+    type: z.literal('social_proof'),
+    data: z.object({
+      heading: z.string().min(1).optional(),
+      items: z.array(z.object({
+        quote: z.string().min(1),
+        author: z.string().min(1),
+        role: z.string().min(1),
+      })).min(2).max(4),
+    }),
+  }),
+  z.object({
+    type: z.literal('pricing_table'),
+    data: z.object({
+      heading: z.string().min(1).optional(),
+      plans: z.array(z.object({
+        name: z.string().min(1),
+        price: z.string().min(1),
+        description: z.string().min(1),
+        features: z.array(z.string().min(1)).min(2).max(5),
+        ctaText: z.string().min(1),
+      })).min(2).max(4),
+    }),
+  }),
+  z.object({
+    type: z.literal('cta_banner'),
+    data: z.object({
+      title: z.string().min(1),
+      subtitle: z.string().min(1),
+      ctaText: z.string().min(1),
+    }),
+  }),
+  z.object({
+    type: z.literal('story_section'),
+    data: z.object({
+      eyebrow: z.string().min(1).optional(),
+      title: z.string().min(1),
+      body: z.string().min(1),
+    }),
+  }),
+  z.object({
+    type: z.literal('faq'),
+    data: z.object({
+      heading: z.string().min(1).optional(),
+      items: z.array(z.object({
+        question: z.string().min(1),
+        answer: z.string().min(1),
+      })).min(3).max(6),
+    }),
+  }),
+  z.object({
+    type: z.literal('image_showcase'),
+    data: z.object({
+      heading: z.string().min(1).optional(),
+      items: z.array(z.object({
+        title: z.string().min(1),
+        caption: z.string().min(1),
+        imageEmoji: emojiValidation,
+      })).min(3).max(6),
+    }),
+  }),
+]);
+
+export type PageBlockData = z.infer<typeof PageBlockSchema>;
+
+export const LandingPageSchema = z.object({
+  pageBlocks: z.array(PageBlockSchema).min(4).max(8),
+  design: LandingDesignSchema.optional(),
 });
 
 export type LandingPageData = z.infer<typeof LandingPageSchema>;

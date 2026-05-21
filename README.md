@@ -1,8 +1,8 @@
-# BizForge AI — AI Business-in-a-Box
+# BizCraft AI — AI Business-in-a-Box
 
 > Turn an idea into a complete online business in under 60 seconds.
 
-BizForge AI is a generative SaaS platform that converts natural language business ideas into fully structured, deployable digital businesses using a multi-provider AI routing system with guaranteed fallback safety.
+BizCraft AI is a generative SaaS platform that converts natural language business ideas into fully structured, deployable digital businesses using a multi-provider AI routing system with guaranteed fallback safety.
 
 ---
 
@@ -37,7 +37,7 @@ A user types a prompt like:
 
 > *"I want to sell skincare products for busy women in Lagos"*
 
-BizForge generates a complete business including:
+BizCraft generates a complete business including:
 
 - **Brand identity** — name, niche, tone, value proposition, colors, logo emoji
 - **Product catalog** — 3-10 products with pricing, descriptions, categories

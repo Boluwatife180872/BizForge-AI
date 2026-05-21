@@ -48,37 +48,110 @@ export default async function LandingPage() {
       <main>
         {/* Hero */}
         <section className="max-w-6xl mx-auto px-6 pt-20 pb-16 sm:pt-28 sm:pb-24">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] text-xs text-[var(--muted-foreground)] mb-8">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Generate a complete business in 60 seconds</span>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] text-xs text-[var(--muted-foreground)] mb-8">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Generate a complete business in 60 seconds</span>
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1]">
+                Turn an idea into a
+                <br />
+                <span className="text-[var(--muted)]">real business.</span>
+              </h1>
+
+              <p className="text-base sm:text-lg text-[var(--muted-foreground)] mt-6 max-w-xl leading-relaxed">
+                Describe your idea in plain English. BizCraft generates your brand, products, landing page, and marketing campaigns — automatically.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 mt-10">
+                <Link
+                  href={isAuthenticated ? '/create' : '/signup'}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--accent-foreground)] font-medium text-sm transition-colors"
+                >
+                  {isAuthenticated ? 'Create a business' : 'Start building'} <ArrowRight className="w-4 h-4" />
+                </Link>
+                {!isAuthenticated && (
+                  <Link
+                    href="/login"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--card)] font-medium text-sm transition-colors"
+                  >
+                    Sign in
+                  </Link>
+                )}
+              </div>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1]">
-              Turn an idea into a
-              <br />
-              <span className="text-[var(--muted)]">real business.</span>
-            </h1>
+            <div className="hidden lg:block animate-fade-in">
+              <div className="relative">
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6 shadow-sm">
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-lg bg-[#6366f1]/15 flex items-center justify-center text-xl">☕</div>
+                    <div>
+                      <p className="text-sm font-medium">Artisan Brew Co.</p>
+                      <p className="text-[10px] text-[var(--muted-foreground)]">Specialty Coffee · Premium</p>
+                    </div>
+                  </div>
 
-            <p className="text-base sm:text-lg text-[var(--muted-foreground)] mt-6 max-w-xl leading-relaxed">
-              Describe your idea in plain English. BizForge generates your brand, products, landing page, and marketing campaigns — automatically.
-            </p>
+                  <div className="flex gap-2 mb-5">
+                    <div className="w-4 h-4 rounded-full bg-[#6366f1] border border-[var(--border)]" />
+                    <div className="w-4 h-4 rounded-full bg-[#a78bfa] border border-[var(--border)]" />
+                    <div className="w-4 h-4 rounded-full bg-[#c4b5fd] border border-[var(--border)]" />
+                  </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 mt-10">
-              <Link
-                href={isAuthenticated ? '/create' : '/signup'}
-                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--accent-foreground)] font-medium text-sm transition-colors"
-              >
-                {isAuthenticated ? 'Create a business' : 'Start building'} <ArrowRight className="w-4 h-4" />
-              </Link>
-              {!isAuthenticated && (
-                <Link
-                  href="/login"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--card)] font-medium text-sm transition-colors"
-                >
-                  Sign in
-                </Link>
-              )}
+                  <div className="space-y-3">
+                    <div className="rounded-lg bg-[var(--background)] border border-[var(--border)] p-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">☕</span>
+                          <div>
+                            <p className="text-xs font-medium">House Blend</p>
+                            <p className="text-[10px] text-[var(--muted-foreground)]">Medium Roast</p>
+                          </div>
+                        </div>
+                        <span className="text-xs font-semibold">$14.00</span>
+                      </div>
+                    </div>
+                    <div className="rounded-lg bg-[var(--background)] border border-[var(--border)] p-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">🫖</span>
+                          <div>
+                            <p className="text-xs font-medium">Single Origin</p>
+                            <p className="text-[10px] text-[var(--muted-foreground)]">Ethiopian Yirgacheffe</p>
+                          </div>
+                        </div>
+                        <span className="text-xs font-semibold">$22.00</span>
+                      </div>
+                    </div>
+                    <div className="rounded-lg bg-[var(--background)] border border-[var(--border)] p-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">🎁</span>
+                          <div>
+                            <p className="text-xs font-medium">Gift Set</p>
+                            <p className="text-[10px] text-[var(--muted-foreground)]">Curated Collection</p>
+                          </div>
+                        </div>
+                        <span className="text-xs font-semibold">$45.00</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 pt-4 border-t border-[var(--border)] flex items-center justify-between">
+                    <div className="flex gap-1">
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-[var(--background)] border border-[var(--border)] text-[var(--muted-foreground)]">3 products</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-[var(--background)] border border-[var(--border)] text-[var(--muted-foreground)]">5 assets</span>
+                    </div>
+                    <span className="text-[10px] text-[var(--muted-foreground)]">Generated in 12s</span>
+                  </div>
+                </div>
+
+                <div className="absolute -top-3 -right-3 px-2.5 py-1 rounded-lg bg-[var(--accent)] text-[var(--accent-foreground)] text-[10px] font-medium shadow-sm">
+                  ✨ BizCraft AI Generated
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -173,7 +246,7 @@ export default async function LandingPage() {
 
       <footer className="border-t border-[var(--border)]">
         <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[var(--muted-foreground)]">&copy; 2026 BizForge. All rights reserved.</p>
+          <p className="text-xs text-[var(--muted-foreground)]">&copy; 2026 BizCraft. All rights reserved.</p>
           <div className="flex items-center gap-6">
             {isAuthenticated ? (
               <>

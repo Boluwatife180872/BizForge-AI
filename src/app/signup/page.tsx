@@ -77,7 +77,7 @@ export default function SignupPage() {
           <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center transition-transform group-hover:scale-105">
             <Sparkles className="w-3.5 h-3.5 text-[var(--accent-foreground)]" />
           </div>
-          <span className="text-sm font-semibold tracking-tight">BizForge</span>
+          <span className="text-sm font-semibold tracking-tight">BizCraft</span>
         </Link>
         <ThemeToggle />
       </header>
