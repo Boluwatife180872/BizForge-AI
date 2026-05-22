@@ -55,8 +55,8 @@ export default function CheckoutModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fade-in p-4">
-      <div className="w-full max-w-sm bg-[var(--background)] border border-[var(--border)] rounded-2xl shadow-2xl overflow-hidden relative animate-scale-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in p-4">
+      <div className="w-full max-w-sm bg-[var(--background)] border border-[var(--border)] rounded-2xl shadow-xl overflow-hidden relative animate-scale-in">
         <button
           onClick={onClose}
           className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center rounded-lg bg-[var(--card)] hover:bg-[var(--card-hover)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors z-10"
@@ -73,7 +73,7 @@ export default function CheckoutModal({
               <p className="text-xs text-[var(--muted-foreground)] mt-0.5">Simulated payment via Paystack</p>
             </div>
 
-            <div className="rounded-xl border border-[var(--card-border)] bg-[var(--card)] p-3.5 flex items-center justify-between">
+            <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-3.5 flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium">{productTitle}</p>
                 <p className="text-xs text-[var(--muted-foreground)]">{businessName}</p>

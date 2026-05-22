@@ -12,7 +12,6 @@ import {
   Sparkles,
 } from 'lucide-react';
 import CheckoutModal from '@/components/CheckoutModal';
-import ThemeToggle from '@/components/ThemeToggle';
 
 type DesignTokens = {
   layout: 'editorial' | 'split' | 'showcase' | 'immersive' | 'stacked';
@@ -858,7 +857,6 @@ export default function StorefrontClient({
                 <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: business.secondaryColor }} />
               )}
             </div>
-            <ThemeToggle />
           </div>
         </div>
       </nav>

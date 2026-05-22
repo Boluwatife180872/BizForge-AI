@@ -1,10 +1,9 @@
 import { auth } from '@/lib/auth';
 import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
-import { Mail, Share2, Award, Sparkles } from 'lucide-react';
+import { Mail, Share2, Award, Sparkles, ArrowLeft } from 'lucide-react';
 import prisma from '@/lib/db';
 import CopyButton from '@/components/CopyButton';
-import ThemeToggle from '@/components/ThemeToggle';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,9 +35,9 @@ export default async function MarketingHubPage({
   };
 
   const typeBadgeColors: Record<string, string> = {
-    email: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
-    ad: 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
-    post: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
+    email: 'bg-blue-500/10 text-blue-600',
+    ad: 'bg-amber-500/10 text-amber-600',
+    post: 'bg-purple-500/10 text-purple-600',
   };
 
   return (
@@ -46,24 +45,19 @@ export default async function MarketingHubPage({
       <header className="border-b border-[var(--border)]">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
-              Dashboard
-            </Link>
-            <span className="text-[var(--border)]">/</span>
-            <Link href={`/dashboard/${business.id}`} className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
-              {business.name}
+            <Link href={`/dashboard/${business.id}`} className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors flex items-center gap-1.5">
+              <ArrowLeft className="w-3.5 h-3.5" /> {business.name}
             </Link>
             <span className="text-[var(--border)]">/</span>
             <span className="text-sm font-medium text-[var(--foreground)]">Marketing</span>
           </div>
-          <ThemeToggle />
         </div>
       </header>
 
       <main className="max-w-6xl mx-auto px-6 py-10">
         <div className="mb-8">
           <h1 className="text-xl font-semibold tracking-tight">Marketing assets</h1>
-          <p className="text-sm text-[var(--muted-foreground)] mt-0.5">Ready-to-use copy generated for {business.name}</p>
+          <p className="text-sm text-[var(--muted-foreground)] mt-1">Ready-to-use copy generated for {business.name}</p>
         </div>
 
         {business.marketingAssets.length === 0 ? (

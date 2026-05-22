@@ -1,9 +1,8 @@
 import { auth } from '@/lib/auth';
 import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
-import { Package, Megaphone, ExternalLink, Calendar } from 'lucide-react';
+import { Package, Sparkles, ExternalLink, Calendar, ArrowLeft } from 'lucide-react';
 import prisma from '@/lib/db';
-import ThemeToggle from '@/components/ThemeToggle';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,8 +33,8 @@ export default async function BusinessDetailPage({
       <header className="border-b border-[var(--border)]">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
-              Dashboard
+            <Link href="/dashboard" className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors flex items-center gap-1.5">
+              <ArrowLeft className="w-3.5 h-3.5" /> Dashboard
             </Link>
             <span className="text-[var(--border)]">/</span>
             <span className="text-sm font-medium text-[var(--foreground)]">{business.name}</span>
@@ -48,20 +47,19 @@ export default async function BusinessDetailPage({
             >
               <ExternalLink className="w-3.5 h-3.5" /> View storefront
             </Link>
-            <ThemeToggle />
           </div>
         </div>
       </header>
 
       <main className="max-w-6xl mx-auto px-6 py-10">
         {/* Business header card */}
-        <div className="rounded-xl border border-[var(--card-border)] bg-[var(--card)] p-6 mb-8">
+        <div className="rounded-xl border border-[var(--card-border)] bg-[var(--card)] p-6 mb-10">
           <div className="flex items-start gap-4">
             <div className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl flex-shrink-0" style={{ backgroundColor: `${business.brandColor}15` }}>
               {business.logoEmoji}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1 flex-wrap">
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                 <h1 className="text-lg font-semibold">{business.name}</h1>
                 <span className="text-[10px] font-medium uppercase px-2 py-0.5 rounded bg-[var(--background)] border border-[var(--border)] text-[var(--muted-foreground)]">
                   {business.niche}
@@ -89,8 +87,8 @@ export default async function BusinessDetailPage({
         </div>
 
         {/* Products */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-5">
             <h2 className="text-sm font-medium text-[var(--foreground)] flex items-center gap-2">
               <Package className="w-4 h-4" /> Products
               <span className="text-xs text-[var(--muted-foreground)] font-normal">({business.products.length})</span>
@@ -98,7 +96,7 @@ export default async function BusinessDetailPage({
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {business.products.map((product) => (
-              <div key={product.id} className="rounded-xl border border-[var(--card-border)] bg-[var(--card)] p-5 hover:border-[var(--border)] transition-colors">
+              <div key={product.id} className="rounded-xl border border-[var(--card-border)] bg-[var(--card)] p-5 hover:border-[var(--border)] transition-all hover:shadow-sm">
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-10 h-10 rounded-lg flex items-center justify-center text-xl" style={{ backgroundColor: `${business.brandColor}12` }}>
                     {product.imageEmoji}
@@ -116,9 +114,9 @@ export default async function BusinessDetailPage({
         {/* Marketing assets */}
         {business.marketingAssets.length > 0 && (
           <div>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-5">
               <h2 className="text-sm font-medium text-[var(--foreground)] flex items-center gap-2">
-                <Megaphone className="w-4 h-4" /> Marketing
+                <Sparkles className="w-4 h-4" /> Marketing
                 <span className="text-xs text-[var(--muted-foreground)] font-normal">({business.marketingAssets.length})</span>
               </h2>
               <Link href={`/dashboard/${business.id}/marketing`} className="text-xs text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
@@ -126,7 +124,7 @@ export default async function BusinessDetailPage({
               </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {business.marketingAssets.map((asset) => (
+              {business.marketingAssets.slice(0, 4).map((asset) => (
                 <div key={asset.id} className="rounded-xl border border-[var(--card-border)] bg-[var(--card)] p-5 flex flex-col">
                   <div className="flex items-center justify-between mb-3">
                     <div>

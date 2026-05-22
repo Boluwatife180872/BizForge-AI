@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { Sparkles, LogOut } from 'lucide-react';
 import { signOut } from '@/lib/auth';
 import { Session } from 'next-auth';
-import ThemeToggle from '@/components/ThemeToggle';
 
 function SignOutButton() {
   return (
@@ -33,8 +32,8 @@ export default function Header({ session, links, rightContent, bordered = true }
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center transition-transform group-hover:scale-105">
-              <Sparkles className="w-3.5 h-3.5 text-[var(--accent-foreground)]" />
+            <div className="w-7 h-7 rounded-lg bg-[var(--brand)] flex items-center justify-center transition-transform group-hover:scale-105">
+              <Sparkles className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="text-sm font-semibold tracking-tight">BizCraft</span>
           </Link>
@@ -61,7 +60,6 @@ export default function Header({ session, links, rightContent, bordered = true }
             <span className="text-xs text-[var(--muted-foreground)] hidden sm:block">{userEmail}</span>
           )}
           {rightContent}
-          <ThemeToggle />
           {isAuthenticated ? (
             <>
               <Link href="/dashboard" className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors hidden sm:block">

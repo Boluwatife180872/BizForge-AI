@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Sparkles, ArrowRight, Loader2, CheckCircle2, ChevronRight, AlertCircle } from 'lucide-react';
-import ThemeToggle from '@/components/ThemeToggle';
 
 interface Stage {
   key: string;
@@ -83,25 +82,22 @@ export default function CreatePage() {
       <header className="border-b border-[var(--border)]">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2.5 group">
-            <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center transition-transform group-hover:scale-105">
-              <Sparkles className="w-3.5 h-3.5 text-[var(--accent-foreground)]" />
+            <div className="w-7 h-7 rounded-lg bg-[var(--brand)] flex items-center justify-center transition-transform group-hover:scale-105">
+              <Sparkles className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="text-sm font-semibold tracking-tight">BizCraft</span>
           </Link>
-          <div className="flex items-center gap-3">
-            <Link href="/dashboard" className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
-              Back to dashboard
-            </Link>
-            <ThemeToggle />
-          </div>
+          <Link href="/dashboard" className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">
+            Back to dashboard
+          </Link>
         </div>
       </header>
 
       <main className="max-w-xl mx-auto px-6 py-16">
         {!loading && !businessId ? (
           <div className="animate-slide-up">
-            <div className="mb-8">
-              <h1 className="text-2xl font-semibold tracking-tight mb-1">Create a business</h1>
+            <div className="mb-10">
+              <h1 className="text-2xl font-semibold tracking-tight mb-1.5">Create a business</h1>
               <p className="text-sm text-[var(--muted-foreground)]">Describe your idea and AI will generate everything</p>
             </div>
 
@@ -119,6 +115,7 @@ export default function CreatePage() {
                   required
                   className="w-full rounded-xl bg-[var(--input)] border border-[var(--input-border)] focus:border-[var(--input-focus)] focus:ring-2 focus:ring-[var(--ring)] px-4 py-3 text-sm text-[var(--foreground)] placeholder-[var(--muted-foreground)] focus:outline-none transition-all resize-none"
                 />
+                <p className="text-xs text-[var(--muted-foreground)]">Be descriptive — mention the niche, audience, and any specific details.</p>
               </div>
 
               {error && (
@@ -131,7 +128,7 @@ export default function CreatePage() {
               <button
                 type="submit"
                 disabled={!prompt.trim()}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] disabled:opacity-40 disabled:pointer-events-none text-[var(--accent-foreground)] font-medium text-sm transition-all"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] disabled:opacity-40 disabled:pointer-events-none text-[var(--accent-foreground)] font-medium text-sm transition-all hover:-translate-y-0.5"
               >
                 Generate business <ArrowRight className="w-4 h-4" />
               </button>
@@ -140,8 +137,8 @@ export default function CreatePage() {
         ) : loading && !businessId ? (
           <div className="animate-fade-in">
             <div className="flex items-center gap-3 mb-10">
-              <div className="w-8 h-8 rounded-full bg-[var(--accent)]/10 flex items-center justify-center">
-                <Loader2 className="w-4 h-4 text-[var(--accent)] animate-spin" />
+              <div className="w-9 h-9 rounded-full bg-[var(--brand-subtle)] flex items-center justify-center">
+                <Loader2 className="w-4 h-4 text-[var(--brand)] animate-spin" />
               </div>
               <div>
                 <h2 className="text-base font-medium">Generating your business</h2>
@@ -151,11 +148,11 @@ export default function CreatePage() {
 
             <div className="flex flex-col gap-1">
               {stages.map((stage, i) => (
-                <div key={stage.key} className="flex items-center gap-3 py-2.5 px-3 rounded-lg transition-colors">
+                <div key={stage.key} className="flex items-center gap-3 py-3 px-4 rounded-lg transition-colors">
                   {stage.status === 'done' ? (
                     <CheckCircle2 className="w-4 h-4 text-[var(--success)] shrink-0" />
                   ) : stage.status === 'running' ? (
-                    <Loader2 className="w-4 h-4 text-[var(--accent)] animate-spin shrink-0" />
+                    <Loader2 className="w-4 h-4 text-[var(--brand)] animate-spin shrink-0" />
                   ) : (
                     <div className={`w-4 h-4 rounded-full border-2 shrink-0 ${i < stages.findIndex(s => s.status === 'running') ? 'border-[var(--success)] bg-[var(--success)]' : 'border-[var(--border)]'}`} />
                   )}
@@ -181,25 +178,25 @@ export default function CreatePage() {
             <div className="flex flex-col gap-3 max-w-sm mx-auto">
               <Link
                 href={`/business/${businessId}`}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--accent-foreground)] font-medium text-sm transition-colors"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--accent-foreground)] font-medium text-sm transition-all hover:-translate-y-0.5"
               >
                 View storefront <ChevronRight className="w-4 h-4" />
               </Link>
               <Link
                 href={`/dashboard/${businessId}/marketing`}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--card)] font-medium text-sm transition-colors"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--card)] font-medium text-sm transition-all"
               >
                 View marketing assets
               </Link>
               <Link
                 href="/dashboard"
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--card)] font-medium text-sm transition-colors"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--card)] font-medium text-sm transition-all"
               >
                 Back to dashboard
               </Link>
               <Link
                 href="/create"
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-[var(--muted-foreground)] hover:text-[var(--foreground)] font-medium text-sm transition-colors"
+                className="w-full flex items-center justify-center py-3 rounded-xl text-[var(--muted-foreground)] hover:text-[var(--foreground)] font-medium text-sm transition-colors"
               >
                 Create another business
               </Link>

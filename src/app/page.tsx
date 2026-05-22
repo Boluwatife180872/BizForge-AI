@@ -1,34 +1,31 @@
 import Link from 'next/link';
-import { ArrowRight, Zap, Shield, Layers, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, BarChart3, Palette, Globe, Mail } from 'lucide-react';
 import { auth } from '@/lib/auth';
 import Header from '@/components/Header';
 
 const steps = [
   {
-    number: '01',
-    icon: Zap,
+    icon: Sparkles,
     title: 'Describe your idea',
     desc: 'Write a sentence or two about the business you want to build. No templates, no forms — just plain English.',
   },
   {
-    number: '02',
-    icon: Layers,
+    icon: Palette,
     title: 'AI builds everything',
     desc: 'Brand identity, product catalog, landing page copy, and marketing campaigns — generated in under 15 seconds.',
   },
   {
-    number: '03',
-    icon: Shield,
+    icon: BarChart3,
     title: 'Launch and iterate',
     desc: 'Get a live storefront URL instantly. Refine the output, regenerate sections, or start fresh with a new prompt.',
   },
 ];
 
 const deliverables = [
-  { label: 'Brand identity', desc: 'Name, colors, tone of voice, logo' },
-  { label: 'Product catalog', desc: '3–10 products with descriptions and pricing' },
-  { label: 'Landing page', desc: 'Hero, features, testimonials, FAQs, about' },
-  { label: 'Marketing copy', desc: 'Emails, ads, and social media posts' },
+  { icon: Palette, label: 'Brand identity', desc: 'Name, colors, tone of voice, logo emoji' },
+  { icon: Globe, label: 'Product catalog', desc: '3–10 products with descriptions and pricing' },
+  { icon: BarChart3, label: 'Landing page', desc: 'Hero, features, testimonials, FAQs, about' },
+  { icon: Mail, label: 'Marketing copy', desc: 'Emails, ads, and social media posts' },
 ];
 
 export default async function LandingPage() {
@@ -47,35 +44,34 @@ export default async function LandingPage() {
 
       <main>
         {/* Hero */}
-        <section className="max-w-6xl mx-auto px-6 pt-20 pb-16 sm:pt-28 sm:pb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <section className="max-w-6xl mx-auto px-6 pt-24 pb-20 sm:pt-32 sm:pb-28">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--card)] text-xs text-[var(--muted-foreground)] mb-8">
-                <Sparkles className="w-3.5 h-3.5" />
+                <Sparkles className="w-3.5 h-3.5 text-[var(--brand)]" />
                 <span>Generate a complete business in 60 seconds</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1]">
-                Turn an idea into a
-                <br />
+              <h1 className="text-[2.25rem] sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.08] text-balance">
+                Turn an idea into a{' '}
                 <span className="text-[var(--muted)]">real business.</span>
               </h1>
 
-              <p className="text-base sm:text-lg text-[var(--muted-foreground)] mt-6 max-w-xl leading-relaxed">
+              <p className="text-base sm:text-lg text-[var(--muted-foreground)] mt-5 max-w-xl leading-relaxed">
                 Describe your idea in plain English. BizCraft generates your brand, products, landing page, and marketing campaigns — automatically.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 mt-10">
+              <div className="flex flex-col sm:flex-row gap-3 mt-8">
                 <Link
                   href={isAuthenticated ? '/create' : '/signup'}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--accent-foreground)] font-medium text-sm transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--accent-foreground)] font-medium text-sm transition-all hover:-translate-y-0.5"
                 >
                   {isAuthenticated ? 'Create a business' : 'Start building'} <ArrowRight className="w-4 h-4" />
                 </Link>
                 {!isAuthenticated && (
                   <Link
                     href="/login"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--card)] font-medium text-sm transition-colors"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--card)] font-medium text-sm transition-all"
                   >
                     Sign in
                   </Link>
@@ -85,9 +81,9 @@ export default async function LandingPage() {
 
             <div className="hidden lg:block animate-fade-in">
               <div className="relative">
-                <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6 shadow-sm">
+                <div className="rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6 shadow-sm shadow-black/[0.02]">
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 rounded-lg bg-[#6366f1]/15 flex items-center justify-center text-xl">☕</div>
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center text-xl" style={{ backgroundColor: 'rgba(99,102,241,0.12)' }}>☕</div>
                     <div>
                       <p className="text-sm font-medium">Artisan Brew Co.</p>
                       <p className="text-[10px] text-[var(--muted-foreground)]">Specialty Coffee · Premium</p>
@@ -95,52 +91,34 @@ export default async function LandingPage() {
                   </div>
 
                   <div className="flex gap-2 mb-5">
-                    <div className="w-4 h-4 rounded-full bg-[#6366f1] border border-[var(--border)]" />
-                    <div className="w-4 h-4 rounded-full bg-[#a78bfa] border border-[var(--border)]" />
-                    <div className="w-4 h-4 rounded-full bg-[#c4b5fd] border border-[var(--border)]" />
+                    <div className="w-4 h-4 rounded-full bg-[#6366f1] border border-[var(--border)] shadow-sm" />
+                    <div className="w-4 h-4 rounded-full bg-[#a78bfa] border border-[var(--border)] shadow-sm" />
+                    <div className="w-4 h-4 rounded-full bg-[#c4b5fd] border border-[var(--border)] shadow-sm" />
                   </div>
 
-                  <div className="space-y-3">
-                    <div className="rounded-lg bg-[var(--background)] border border-[var(--border)] p-3">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">☕</span>
-                          <div>
-                            <p className="text-xs font-medium">House Blend</p>
-                            <p className="text-[10px] text-[var(--muted-foreground)]">Medium Roast</p>
+                  <div className="space-y-2.5">
+                    {[
+                      { emoji: '☕', name: 'House Blend', sub: 'Medium Roast', price: '$14.00' },
+                      { emoji: '🫖', name: 'Single Origin', sub: 'Ethiopian Yirgacheffe', price: '$22.00' },
+                      { emoji: '🎁', name: 'Gift Set', sub: 'Curated Collection', price: '$45.00' },
+                    ].map((item) => (
+                      <div key={item.name} className="rounded-lg bg-[var(--background)] border border-[var(--border)] p-3 hover:border-[var(--muted-foreground)] transition-colors">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2.5">
+                            <span className="text-lg">{item.emoji}</span>
+                            <div>
+                              <p className="text-xs font-medium">{item.name}</p>
+                              <p className="text-[10px] text-[var(--muted-foreground)]">{item.sub}</p>
+                            </div>
                           </div>
+                          <span className="text-xs font-semibold">{item.price}</span>
                         </div>
-                        <span className="text-xs font-semibold">$14.00</span>
                       </div>
-                    </div>
-                    <div className="rounded-lg bg-[var(--background)] border border-[var(--border)] p-3">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">🫖</span>
-                          <div>
-                            <p className="text-xs font-medium">Single Origin</p>
-                            <p className="text-[10px] text-[var(--muted-foreground)]">Ethiopian Yirgacheffe</p>
-                          </div>
-                        </div>
-                        <span className="text-xs font-semibold">$22.00</span>
-                      </div>
-                    </div>
-                    <div className="rounded-lg bg-[var(--background)] border border-[var(--border)] p-3">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">🎁</span>
-                          <div>
-                            <p className="text-xs font-medium">Gift Set</p>
-                            <p className="text-[10px] text-[var(--muted-foreground)]">Curated Collection</p>
-                          </div>
-                        </div>
-                        <span className="text-xs font-semibold">$45.00</span>
-                      </div>
-                    </div>
+                    ))}
                   </div>
 
                   <div className="mt-5 pt-4 border-t border-[var(--border)] flex items-center justify-between">
-                    <div className="flex gap-1">
+                    <div className="flex gap-1.5">
                       <span className="text-[10px] px-2 py-0.5 rounded bg-[var(--background)] border border-[var(--border)] text-[var(--muted-foreground)]">3 products</span>
                       <span className="text-[10px] px-2 py-0.5 rounded bg-[var(--background)] border border-[var(--border)] text-[var(--muted-foreground)]">5 assets</span>
                     </div>
@@ -157,96 +135,112 @@ export default async function LandingPage() {
         </section>
 
         {/* How it works */}
-        <section className="max-w-6xl mx-auto px-6 py-16 sm:py-24 border-t border-[var(--border)]">
-          <div className="mb-12">
-            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted-foreground)] mb-2">How it works</p>
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">Three steps from idea to launch</h2>
-          </div>
+        <section className="border-t border-[var(--border)]">
+          <div className="max-w-6xl mx-auto px-6 py-24 sm:py-28">
+            <div className="max-w-xl mb-16">
+              <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted-foreground)] mb-3">How it works</p>
+              <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-balance">Three steps from idea to launch</h2>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            {steps.map((step) => (
-              <div key={step.number} className="relative">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-10 h-10 rounded-lg border border-[var(--border)] bg-[var(--card)] flex items-center justify-center">
-                      <step.icon className="w-4 h-4 text-[var(--muted-foreground)]" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14">
+              {steps.map((step, i) => (
+                <div key={step.title} className="relative">
+                  <div className="flex items-start gap-5">
+                    <div className="flex-shrink-0">
+                      <div className="w-11 h-11 rounded-xl border border-[var(--border)] bg-[var(--card)] flex items-center justify-center">
+                        <step.icon className="w-5 h-5 text-[var(--foreground)]" />
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[10px] font-mono text-[var(--muted-foreground)]">{step.number}</span>
-                      <h3 className="text-sm font-medium text-[var(--foreground)]">{step.title}</h3>
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs font-mono text-[var(--muted-foreground)]">0{i + 1}</span>
+                        <h3 className="text-sm font-semibold">{step.title}</h3>
+                      </div>
+                      <p className="text-sm text-[var(--muted)] leading-relaxed">{step.desc}</p>
                     </div>
-                    <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">{step.desc}</p>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
 
         {/* What you get */}
-        <section className="max-w-6xl mx-auto px-6 py-16 sm:py-24 border-t border-[var(--border)]">
-          <div className="mb-12">
-            <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted-foreground)] mb-2">Deliverables</p>
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">What you get from a single prompt</h2>
-          </div>
+        <section className="border-t border-[var(--border)]">
+          <div className="max-w-6xl mx-auto px-6 py-24 sm:py-28">
+            <div className="max-w-xl mb-16">
+              <p className="text-xs uppercase tracking-[0.2em] text-[var(--muted-foreground)] mb-3">Deliverables</p>
+              <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-balance">What you get from a single prompt</h2>
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--border)] rounded-xl border border-[var(--border)] overflow-hidden">
-            {deliverables.map((item) => (
-              <div key={item.label} className="bg-[var(--background)] p-6">
-                <h3 className="text-sm font-medium text-[var(--foreground)] mb-1">{item.label}</h3>
-                <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--border)] rounded-2xl border border-[var(--border)] overflow-hidden">
+              {deliverables.map((item) => (
+                <div key={item.label} className="bg-[var(--background)] p-7">
+                  <div className="w-9 h-9 rounded-lg border border-[var(--border)] bg-[var(--card)] flex items-center justify-center mb-4">
+                    <item.icon className="w-4 h-4 text-[var(--foreground)]" />
+                  </div>
+                  <h3 className="text-sm font-semibold mb-1.5">{item.label}</h3>
+                  <p className="text-xs text-[var(--muted)] leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
         {/* CTA */}
         {isAuthenticated ? (
-          <section className="max-w-6xl mx-auto px-6 py-16 sm:py-24 border-t border-[var(--border)]">
-            <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-3">What will you build next?</h2>
-              <p className="text-sm text-[var(--muted-foreground)] mb-8">
-                Generate another business or check your dashboard.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link
-                  href="/create"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--accent-foreground)] font-medium text-sm transition-colors"
-                >
-                  Create a business <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="/dashboard"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--card)] font-medium text-sm transition-colors"
-                >
-                  View dashboard
-                </Link>
+          <section className="border-t border-[var(--border)]">
+            <div className="max-w-6xl mx-auto px-6 py-24 sm:py-28">
+              <div className="max-w-2xl mx-auto text-center">
+                <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3 text-balance">What will you build next?</h2>
+                <p className="text-sm text-[var(--muted-foreground)] mb-8">
+                  Generate another business or check your dashboard.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Link
+                    href="/create"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--accent-foreground)] font-medium text-sm transition-all hover:-translate-y-0.5"
+                  >
+                    Create a business <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--card)] font-medium text-sm transition-all"
+                  >
+                    View dashboard
+                  </Link>
+                </div>
               </div>
             </div>
           </section>
         ) : (
-          <section className="max-w-6xl mx-auto px-6 py-16 sm:py-24 border-t border-[var(--border)]">
-            <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-3">Ready to build?</h2>
-              <p className="text-sm text-[var(--muted-foreground)] mb-8">
-                Create a free account and generate your first business in under a minute.
-              </p>
-              <Link
-                href="/signup"
-                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--accent-foreground)] font-medium text-sm transition-colors"
-              >
-                Get started free <ArrowRight className="w-4 h-4" />
-              </Link>
+          <section className="border-t border-[var(--border)]">
+            <div className="max-w-6xl mx-auto px-6 py-24 sm:py-28">
+              <div className="max-w-2xl mx-auto text-center">
+                <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3 text-balance">Ready to build?</h2>
+                <p className="text-sm text-[var(--muted-foreground)] mb-8">
+                  Create a free account and generate your first business in under a minute.
+                </p>
+                <Link
+                  href="/signup"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[var(--accent-foreground)] font-medium text-sm transition-all hover:-translate-y-0.5"
+                >
+                  Get started free <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
           </section>
         )}
       </main>
 
       <footer className="border-t border-[var(--border)]">
-        <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[var(--muted-foreground)]">&copy; 2026 BizCraft. All rights reserved.</p>
+        <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5">
+            <div className="w-6 h-6 rounded-lg bg-[var(--brand)] flex items-center justify-center">
+              <Sparkles className="w-3 h-3 text-white" />
+            </div>
+            <p className="text-xs text-[var(--muted-foreground)]">&copy; 2026 BizCraft. All rights reserved.</p>
+          </div>
           <div className="flex items-center gap-6">
             {isAuthenticated ? (
               <>

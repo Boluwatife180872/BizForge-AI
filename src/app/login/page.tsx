@@ -5,7 +5,6 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, Loader2, AlertCircle, Sparkles } from "lucide-react";
-import ThemeToggle from "@/components/ThemeToggle";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -47,12 +46,11 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] flex flex-col">
       <header className="w-full max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center transition-transform group-hover:scale-105">
-            <Sparkles className="w-3.5 h-3.5 text-[var(--accent-foreground)]" />
+          <div className="w-7 h-7 rounded-lg bg-[var(--brand)] flex items-center justify-center transition-transform group-hover:scale-105">
+            <Sparkles className="w-3.5 h-3.5 text-white" />
           </div>
           <span className="text-sm font-semibold tracking-tight">BizCraft</span>
         </Link>
-        <ThemeToggle />
       </header>
 
       <main className="flex-1 flex items-center justify-center px-6 py-12">
